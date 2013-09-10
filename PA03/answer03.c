@@ -62,8 +62,36 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-    return NULL;
+  FILE * fptr; //pointer to a file
+  int * arr; 
+  int val; //what do we need this for?
+  int i;
+
+  fptr = fopen(filename, "r");
+  if (fptr == NULL)
+    {
+      return NULL;
+    }
+  
+  while (fscanf(fptr, "%d",&val) == 1)
+    {
+      *numberOfIntegers += 1;
+    }
+  
+  arr = malloc((*numberOfIntegers) * sizeof(int));
+
+  fseek(fptr, 0, SEEK_SET);
+  for (i = 0;i < * numberOfIntegers; i++)
+    {
+      fscanf(fptr,"%d", &val);
+      arr[i] = val;
+    }
+
+  fclose(fptr);
+
+  return arr; 
 }
+    
 
 /**
  * Sort an (ascending) array of integers
@@ -153,7 +181,28 @@ void sort(int * arr, int length)
  */
 int search(int * arr, int length, int key)
 {
-    return -1;
+  /*
+  //i want to use first and last variable but dont know how to assign it? 
+int mid = length / 2;
+  if (key == arr[mid])
+    {
+      return mid;
+    }
+  else if (key < arr[mid])
+    {
+      length = length - mid - 1; 
+      search(arr, length, key); //should i assign it a variable? since it is an int function?
+    }
+  else if (key > arr[mid])
+    {
+      //i dont know how to make the first element to be the element after the mid
+    }
+  else if (mid == length && keu != arr[mid])
+    {
+      return -1;
+    }
+  */
+  return -1;
 }
 
 
