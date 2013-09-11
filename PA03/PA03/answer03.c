@@ -176,7 +176,7 @@ int partition(int * arr, int start, int end, int length)
 	  pindex--;
 	}
     }
-  //moving the pivot into the middle
+  //moving the pivo into the middle
   temp2 = arr[pindex];
   arr[pindex] = arr[start];
   arr[start] = temp2;  
