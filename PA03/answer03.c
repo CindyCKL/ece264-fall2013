@@ -63,9 +63,9 @@
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
   FILE * fptr; //pointer to a file
-  int * arr; 
-  int val; //what do we need this for?
-  int i;
+  int * arr; //array of integers
+  int val; //elements in the array
+  int i; //loop control expression
 
   fptr = fopen(filename, "r");
   if (fptr == NULL)
@@ -130,6 +130,11 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
  * sort.
  *
  */
+
+//FUNCTION DECLARATION
+void sorthelper(int * arr, int start, int end, int length);
+int partition(int * arr, int start, int end, int length);
+
 void sort(int * arr, int length)
 {
   //COMPUTATION
@@ -139,7 +144,7 @@ void sort(int * arr, int length)
 void sorthelper(int * arr, int start, int end, int length)
 {
   //LOCAL VARIABLES
-  int partitionindex;
+  int partitionindex; //index of the pivot in the end
   
   //COMPUTATION
   if (start < end) //only runs if start < end
@@ -171,7 +176,7 @@ int partition(int * arr, int start, int end, int length)
 	  pindex--;
 	}
     }
-
+  //moving the pivo into the middle
   temp2 = arr[pindex];
   arr[pindex] = arr[start];
   arr[start] = temp2;  
@@ -223,6 +228,10 @@ int partition(int * arr, int start, int end, int length)
  * }
  * return -1;
  */
+
+//FUNCTION DECLARATION
+int searchhelp(int * arr, int first, int last, int key);
+
 int search(int * arr, int length, int key)
 {
   //LOCAL VARIABLE
