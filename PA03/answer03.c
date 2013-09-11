@@ -132,7 +132,51 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
  */
 void sort(int * arr, int length)
 {
-    
+  //COMPUTATION
+  sorthelper(arr, 0, length - 1, length); //call sort function to sort the elements    
+}
+
+void sorthelper(int * arr, int start, int end, int length)
+{
+  //LOCAL VARIABLES
+  int partitionindex;
+  
+  //COMPUTATION
+  if (start < end) //only runs if start < end
+    {
+      partitionindex = partition(arr, start, end, length); //find the partition index
+      sorthelper(arr, start, partitionindex - 1, length);
+      sorthelper(arr, partitionindex + 1, end, length);
+    }
+}
+
+int partition(int * arr, int start, int end, int length)
+{
+  //LOCAL VARIABLES
+  int pivot = arr[start]; //pivot is always the first element of the array
+  int pindex = end; //we will start searching from the back
+  int i; //loop control expression
+  int temp1; //temp variable 1
+  int temp2; //temp variable 2
+
+  //COMPUTATIONS
+  for (i = end; i > start; i--) //starting from the very end, ended before pivot
+    {
+      if (arr[i] > pivot)
+	{
+	  //swap the elements to the right if theyre bigger than the pivot
+	  temp1 = arr[i];
+	  arr[i] = arr[pindex];
+	  arr[pindex] = temp1;
+	  pindex--;
+	}
+    }
+
+  temp2 = arr[pindex];
+  arr[pindex] = arr[start];
+  arr[start] = temp2;  
+
+  return pindex;
 }
 
 /**
@@ -181,28 +225,40 @@ void sort(int * arr, int length)
  */
 int search(int * arr, int length, int key)
 {
-  /*
-  //i want to use first and last variable but dont know how to assign it? 
-int mid = length / 2;
-  if (key == arr[mid])
-    {
-      return mid;
-    }
-  else if (key < arr[mid])
-    {
-      length = length - mid - 1; 
-      search(arr, length, key); //should i assign it a variable? since it is an int function?
-    }
-  else if (key > arr[mid])
-    {
-      //i dont know how to make the first element to be the element after the mid
-    }
-  else if (mid == length && keu != arr[mid])
+  //LOCAL VARIABLE
+  int indexofkey;
+
+  //COMPUTATION
+  indexofkey = searchhelp(arr, 0, length - 1, key);
+ 
+  return indexofkey;
+}
+
+int searchhelp(int * arr, int first, int last, int key)
+{
+  //LOCAL VARIABLE
+  int mid = (first + last) / 2 ; 
+  if (first > last)
     {
       return -1;
     }
-  */
-  return -1;
+  else if (arr[mid] == key)
+    {
+      return mid;
+    }
+  else if (arr[mid] > key) //discard the upper half since key is smaller
+    {
+      return searchhelp (arr, first, mid - 1, key);
+    }
+  else if(arr[mid] < key) //discard the lower half since key is bigger
+    {
+      return searchhelp (arr, mid + 1, last, key);
+    }
+  else
+    {
+      return -1;
+    }
+
 }
 
 
