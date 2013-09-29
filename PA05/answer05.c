@@ -79,7 +79,7 @@ int * readInteger(char * filename, int * numInteger)
   //find out how many spaces we need for the array
   while(fscanf(fptr, "%d", &val) == 1)
     {
-      *numInteger += 1;
+      (*numInteger)++;
     }
 
   //assigning the appropriate amount of array spaces
@@ -95,6 +95,7 @@ int * readInteger(char * filename, int * numInteger)
       arr[i] = val; //assign values to the array
     } 
 
+  //arr[numInteger] = "\0";
   //close the connection
   fclose(fptr);  
 return arr;
@@ -168,8 +169,8 @@ return arr;
 
 char * * readString(char * filename, int * numString)
 {
-  FILE * fptr;
-  char * * arrstring; //array contains pointers of strings
+  FILE * fptr; //file pointer
+  char * (* arrstring); //array contains pointers of strings
   int ind = 0; //position of the array index
   char temporary[MAXIMUM_LENGTH]; //what size should i put here? numstring = 0 initially 
 
@@ -179,25 +180,26 @@ char * * readString(char * filename, int * numString)
       return NULL;
     }
 
-  while(fgets(temporary, MAXIMUM_LENGTH. fptr) != NULL)
+  while(fgets(temporary, MAXIMUM_LENGTH, fptr) != NULL)
     {
-      *numString;
+      (*numString)++;
     }
 
   //ARRAY OF POINTERS
-  arrstring = malloc(sizeof(char*)*numString);
+  arrstring = malloc((*numString)*sizeof(char*));
 
   //GO BACK TO THE BEGINNING
   fseek(fptr, 0, SEEK_SET);
 
-  while(fgets(temporary, numString, fptr) != NULL)
+  while(fgets(temporary, MAXIMUM_LENGTH, fptr) != NULL)
     {
       arrstring[ind] = malloc(sizeof(char) * (strlen(temporary) + 1));
-      strcpy(arrstring[ind], temporary);
+      strcpy(arrstring[ind], temporary); //is it *arrString[ind]?
       ind++;
     }
 
   fclose(fptr);
+  return arrstring;
 
 }
 
@@ -213,7 +215,7 @@ void printInteger(int * arrInteger, int numInteger)
   //PRINTING THE INTEGERS ONE BY ONE
   for(i = 0; i < numInteger; i++)
     {
-      printf("%d", arrIntegers[i]);
+      printf("%d", arrInteger[i]);
     }
 
 }
@@ -224,24 +226,52 @@ void printInteger(int * arrInteger, int numInteger)
  *
  * Hint: printf("%s" ... can print a string
  */
+
+//void fprintstring(FILE * fout, char * * arrString, int numString);
+
 void printString(char * * arrString, int numString)
 {
-  //LOCAL VARIABLE
   int i;
 
   //PRINTING THE ARRAY OF POINTERS
+  //  fprintstring(stdout, arrString, numString);
   for(i = 0; i < numString; i++)
     {
-      printf("%s", arrString[i]);
+      if(i==0)
+	{
+	  printf("%s\n", arrString[i]);
+	}
+      else
+	{
+	  printf("%s", arrString[i]);
+	}
     }
 }
+/*
+void fprintstring(FILE * fout, char * * arrString, int numString)
+{
+  int i;
 
+  for(i = 0; i < numString; i++)
+    {
+      if(i == 0)
+	{
+	  printf("%s\n", arrString[i]);
+	}
+      else
+	{
+	  printf("%s", arrString[i]);
+	}
+    }
+} 
+*/
 /* ----------------------------------------------- */
 /*
  * release the memory occupied by the array of integers
  */
 void freeInteger(int * arrInteger, int numInteger)
 {
+  free(arrInteger);
 }
 
 /* ----------------------------------------------- */
@@ -252,6 +282,13 @@ void freeInteger(int * arrInteger, int numInteger)
  */
 void freeString(char * * arrString, int numString)
 {
+  int ind;
+
+  for(ind = 0; ind < numString; ind++)
+    {
+      free(arrString[ind]); //should i put one star?
+    }
+  free(arrString);
 }
 
 /* ----------------------------------------------- */
@@ -274,7 +311,22 @@ void freeString(char * * arrString, int numString)
 
 int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
-   return 0;
+  FILE * fout;
+  int i;
+  fout = fopen(filename, "w");
+
+  if(fout == NULL)
+    {
+      return 0;
+    }
+
+  for(i = 0; i < numInteger; i++)
+    {
+      fprintf(fout, "%d\n", arrInteger[i]);
+    }
+
+  fclose(fout); 
+  return 1;
 }
 
 /* ----------------------------------------------- */
@@ -297,7 +349,31 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 
 int saveString(char * filename, char * * arrString, int numString)
 {
-    return 0;
+  FILE * fout;
+  int i;  
+  fout = fopen(filename, "w");
+
+  if(fout == NULL)
+    {
+      return 0;
+    }
+
+  // fprintstring(fout, arrString, numString);
+  for(i = 0; i < numString; i++)
+    {
+      if(i == 0)
+	{
+	  fprintf(fout, "%s\n", arrString[i]);
+	}
+      else
+	{
+	  fprintf(fout, "%s", arrString[i]);
+	}
+    }
+
+  fclose(fout);
+
+  return 1;
 }
 
 /* ----------------------------------------------- */
@@ -308,10 +384,36 @@ int saveString(char * filename, char * * arrString, int numString)
  *
  */
 
+int compint(const void * P1, const void * P2);
+
 void sortInteger(int * arrInteger, int numInteger)
 {
+  qsort(&arrInteger[0], numInteger, sizeof(int), compint);
 }
+ 
+int compint(const void * P1, const void * P2)
+{
+  //DECLARING THE TYPE OF THE POINTERS
+  int * intp1 = (int*) P1;
+  int * intp2 = (int*) P2;
 
+  //COPYING THE VALUES OF P1 AND P2
+  int intv1 = *intp1;
+  int intv2 = *intp2;
+
+  //COMPARE THEM
+  if(intv1 < intv2)
+    {
+      return -1;
+    }
+
+  if(intv1 == intv2)
+    {
+      return 0;
+    }
+
+  return 1;
+} 
 
 /* ----------------------------------------------- */
 /*
@@ -323,8 +425,25 @@ void sortInteger(int * arrInteger, int numInteger)
  *
  */
 
+int compstring(const void * p1, const void * p2);
+
 void sortString(char * * arrString, int numString)
 {
+  qsort(&arrString[0], numString, sizeof(char*), compstring);
 }
 
+int compstring(const void * p1, const void * p2)
+{
+  int compare;
+
+  char * (* strp1) = (char* *) p1;
+  char * (* strp2) = (char* *) p2;
+
+  char * str1 = * strp1;
+  char * str2 = * strp2;
+
+  compare = strcmp(str1, str2);
+
+  return compare;
+}
 
