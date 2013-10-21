@@ -257,7 +257,7 @@ Node * List_merge(Node * head1, Node * head2)
   Node * headcopy = NULL;
   headcopy = List_copy(head1);
   //Node * head1copy = List_copy(head1);//why is it unused?
-  while((head1 != NULL) && (head2 != NULL))
+  while(head2 != NULL)
     {
       if(head2->value != 0)
 	{
@@ -294,8 +294,12 @@ Node * List_merge(Node * head1, Node * head2)
 	}
       */
 	  headcopy = List_insert_ascend(headcopy, head2->value, head2->index);
+	  if(headcopy->value == 0)
+	    {
+	      headcopy = List_delete(headcopy, headcopy->index);
+	    }
 	}      
-      head1 = head1 ->next;
+      //head1 = head1 ->next;
       head2 = head2 ->next;
     }
 

@@ -1,4 +1,4 @@
-==3896== Memcheck, a memory error detector
+>==3896== Memcheck, a memory error detector
 ==3896== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
 ==3896== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
 ==3896== Command: ./pa07 inputs/input8_A inputs/input8_B
