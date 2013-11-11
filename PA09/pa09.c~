@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main( int argc, char ** argv)
+{
+  File * fptr = NULL; //file pointer
+  //CHECK ARGC  
+if (argc != 3)
+    {
+      printf("Error! Number of arguments must be 3! ./pa09 <input file> <output file>");
+      return EXIT_FAILURE;    
+    }
+//OPEN INPUT AND CHECK
+  fptr = fopen (argv[1], "r");
+  if(fptr == NULL)
+    {
+      printf("File error!\n");
+      return EXIT_FAILURE;
+    }
+
+  //CALL FUNCTION TO CREATE HUFFMAN TREE, RETURN HEAD
+  int * headhuffman; //is it an int?
+  headhuffman =1;
+
+  fclose (fptr);
+
+  fptr  =fopen(argv[2], "w");
+  if(fptr == NULL)
+    {
+      printf("output file error\n");
+      return EXIT_FAILURE;
+    }
+
+  fclose (fptr);
+
+}
+
