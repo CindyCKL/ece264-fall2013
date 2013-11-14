@@ -18,8 +18,13 @@ void Huff_postOrderPrint(HuffNode *tree, FILE * fptr);
 HuffNode * HuffNode_create(int data);
 Stack * Stack_push(Stack * stackcall, HuffNode *treenode);
 Stack * Stack_pop(Stack * stackcall);
-HuffNode * makingatree(FILE * fptr);
+HuffNode * makingatreewithbyte(FILE * fptr);
 void destroy(HuffNode * head);
+/*
+HuffNode * makingatreewithbits(FILE *fptr);
+unsigned char getcommand(FILE * fptr, int * cmdloc, unsigned char * ourbyte);
+int getdata(FILE * fptr, int * cmdloc, unsigned char * ourbyte);
+*/
 
 
 #endif

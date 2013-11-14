@@ -23,66 +23,66 @@ HuffNode * HuffNode_create(int data)//will the data be int? or char?
 }
 
 //PUSH AND PULL CALL STACK
-Stack * Stack_push(Stack * newstack, HuffNode * thenode)
+Stack * Stack_push(Stack * stackcall, HuffNode *treenode)
 {
-  Stack * topstack = malloc(sizeof(Stack));
-  if(topstack == NULL)
+  Stack * topnode = malloc(sizeof(Stack));
+  if(topnode == NULL)
     {printf("Error! No malloc!");}
-  topstack -> node = thenode; //data
-  topstack -> next = newstack;
-  return topstack;
+  topnode -> node = treenode; //data
+  topnode -> next = stackcall;
+  return topnode;
 }
 
-Stack * Stack_pop(Stack * topstack)
+Stack * Stack_pop(Stack * stackcall)
 {
-  if (topstack == NULL)
+  if (stackcall == NULL)
     {
       return NULL;
     }
 
-  Stack * nextstack = topstack -> next;
-  free(topstack); //release stack, not tree
+  Stack * nextstack = stackcall -> next;
+  free(stackcall); //release stack, not tree
   return nextstack;
 }
 
 //can i use this for bytes also? or only for bits?
 
 //MAKING A TREE, for bytes
-HuffNode * makingatreewithbyte(FILE * fptr)
+HuffNode * makingatree(FILE * fptr)
  {
    int treedone = 0;
    Stack * newstack = NULL; //create an empty stack
-   int command;
+   unsigned char command;
    command = fgetc(fptr); //read the file
+
    while(!feof(fptr) && (treedone == 0))
      {
-       if(command != '0')
+       if(command != 0)
 	 {
 	   command = fgetc(fptr); //command is the data
-	   HuffNode * node = HuffNode_create(command);
-	   newstack = Stack_push (newstack, node);
+	   HuffNode * head = HuffNode_create(command);
+	   newstack = Stack_push (newstack, head);
 	 }
 
-       if(command == '0')
+       if(command == 0)
 	 {
-	   HuffNode * node1 = newstack -> node;
+	   HuffNode * element1 = newstack -> node;
 	   newstack = Stack_pop(newstack);
 	   if(newstack == NULL)
 	     {
 	       treedone = 1;
-	       return node1; //you get your tree
+	       return element1; //you get your tree
 	     }
 	   else
 	     {
-	       HuffNode * node2 = newstack -> node;
+	       HuffNode * element2 = newstack -> node;
 	       newstack = Stack_pop(newstack);
 	       HuffNode * par = malloc(sizeof(HuffNode));
-	       par -> right = node1;
-	       par -> left = node2;
+	       par -> right = element1;
+	       par -> left = element2;
 	       newstack = Stack_push(newstack, par);
 	     }
 	 }
-       command = fgetc(fptr);
      } 
    return NULL;
  }
@@ -138,7 +138,7 @@ void Huff_postOrderPrint(HuffNode * tree, FILE * fptr)
     // Visit node itself (only if leaf)
     if (tree->left == NULL && tree->right == NULL) 
       {
-	fprintf(fptr, "Leaf: %c\n", tree->value);
+	printf("Leaf: %c\n", tree->value);
       }
     
 

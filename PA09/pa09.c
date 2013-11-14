@@ -5,7 +5,7 @@
 
 int main( int argc, char ** argv)
 {
-  FILE * fptr = NULL; //file pointer
+FILE * fptr = NULL; //file pointer
   //CHECK ARGC  
 if (argc != 3)
     {
@@ -21,13 +21,24 @@ if (argc != 3)
     }
 
   //CALL FUNCTION TO CREATE HUFFMAN TREE, RETURN HEAD OF THE TREE
-  HuffNode * headhuffman; //is it an int?
-  headhuffman = makingatree(fptr);
+  HuffNode * headhuffman = NULL; 
+  /*
+  if(strstr(fptr, "ch") != NULL)
+    {
+      headhuffman = makingatreewithbyte(fptr);
+    }
+  else
+    {
+      headhuffman = makingatreewithbits(fptr);
+    }
+  */
+
+  headhuffman = makingatreewithbyte(fptr);
 
   fclose (fptr);
 
   //OPEN AN OUTPUT FILE
-  fptr  =fopen(argv[2], "w");
+   fptr  =fopen(argv[2], "w");
   if(fptr == NULL)
     {
       printf("output file error\n");
@@ -41,6 +52,8 @@ if (argc != 3)
   fclose (fptr);
 
   destroy(headhuffman);
+
+  return 0;
 
 }
 
