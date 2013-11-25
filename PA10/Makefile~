@@ -1,0 +1,79 @@
+GCC = gcc
+CFLAGS = -g -Wall -Wshadow
+all : pa10
+
+clean : rm -rf *.o pa10
+
+pa10 : answer10.o pa10.o tree.o
+	$(GCC) $(CFLAGS) answer10.o pa10.o tree.o -o pa10
+
+pa10.o : pa10.c pa10.h
+	$(GCC) $(CFLAGS) -c pa10.c
+
+answer10.o : answer10.c pa10.h
+	$(GCC) $(CFLAGS) -c answer10.c
+
+tree.o : tree.c tree.h
+	$(GCC) $(CFLAGS) -c tree.c
+
+
+test : test1 test2 test3 test4 test5 test6 test7 test8 test9
+
+test1 : pa10
+	./pa10 shapes 1 outputs/output1
+	diff outputs/output1 expected/shapes-1
+	valgrind --leak-check=full --verbose --log-file=outputs/memoutput_shapes1 ./pa10 shapes 1 outputs/output1
+
+test2 : pa10
+	./pa10 shapes 2 outputs/output2
+	diff outputs/output2 expected/shapes-2
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes2 ./pa10 shapes 2 outputs/output2
+
+test3 : pa10
+        ./pa10 shapes 3 outputs/output3
+	diff outputs/output3 expected/shapes-3
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes1 ./pa10 shapes 3 outputs/output3
+
+test4 : pa10
+        ./pa10 shapes 4 outputs/output4
+	diff outputs/output4 expected/shapes-4
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes4 ./pa10 shapes 4 outputs/output4
+
+
+test5 : pa10
+        ./pa10 shapes 5 outputs/output5
+	diff outputs/output5 expected/shapes-5
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes1 ./pa10 shapes 5 outputs/output5
+
+
+test6 : pa10
+        ./pa10 shapes 6 outputs/output6
+	diff outputs/output1 expected/shapes-6
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes1 ./pa10 shapes 6 outputs/output6
+
+
+test7 : pa10
+        ./pa10 shapes 7 outputs/output7
+	diff outputs/output7 expected/shapes-7
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes7 ./pa10 shapes 7 outputs/output7
+
+
+test8 : pa10
+        ./pa10 shapes 8 outputs/output8
+	diff outputs/output1 expected/shapes-8
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes8 ./pa10 shapes 8 outputs/output8
+
+
+test9 : pa10
+        ./pa10 shapes 9 outputs/output9
+	diff outputs/output1 expected/shapes-9
+	valgrind --leak-check=full --verbose --log-file=outputs/memou\
+tput_shapes9 ./pa10 shapes 9 outputs/output9
+
